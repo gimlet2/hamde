@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "katex": "^0.16.10",
+    "purecss": "^3.0.0"
+  },
+  "scripts": {
+    "build": "cp node_modules/katex/dist/katex.min.css node_modules/katex/dist/katex.min.js node_modules/katex/dist/contrib/auto-render.min.js node_modules/purecss/build/pure-min.css ."
+  }
+}
