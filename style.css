@@ -281,6 +281,10 @@ a.pure-button-primary {
 
 }
 
+#question {
+    text-transform: none;
+}
+
 .answer {
     border: solid 1px;
     margin: 10px;
