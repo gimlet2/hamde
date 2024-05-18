@@ -20,6 +20,9 @@
     const answer2Element = document.getElementById('answer_2');
     const answer3Element = document.getElementById('answer_3');
     const answer4Element = document.getElementById('answer_4');
+    const explanationToggleElement = document.getElementById('explain_toggle');
+    const explanationElement = document.getElementById('explain');
+
     let filerFor = undefined;
     let asked = 1;
     let answered = 0;
@@ -27,7 +30,6 @@
         return function () {
             filerFor = t;
             questions = allQuestions.filter(function (element) {
-                if (filerFor === t) return true;
                 return element.class === filerFor;
             });
             renderQuestion(questions.random());
@@ -38,7 +40,20 @@
     document.getElementById('e_questions').addEventListener('click', classSelector("2"));
     document.getElementById('a_questions').addEventListener('click', classSelector("3"));
     let allQuestions = [];
+    let explanations = {};
     let questions = [];
+
+    function loadExplanations() {
+        fetch('explanations.json')
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (result) {
+                result.forEach(function (element) {
+                    explanations[element.number] = element.explanation;
+                });
+            });
+    }
 
     function loadQuestions() {
         fetch('resources/assets/fragenkatalog.json')
@@ -47,6 +62,7 @@
             })
             .then(function (result) {
                 allQuestions = parseQuestions(result);
+                loadExplanations();
                 questions = allQuestions;
                 renderQuestion(questions.random());
             });
@@ -96,6 +112,16 @@
         if (question.picture_question !== undefined) {
             questionElement.innerHTML = questionElement.innerHTML + '<br/><img src="/resources/assets/svgs/' + question.picture_question + '.svg"/>';
         }
+        explanationElement.style.display = 'none';
+        explanationToggleElement.style.visibility = 'hidden';
+        explanationToggleElement.onclick = null;
+        if (explanations[question.number] !== undefined) {
+            explanationToggleElement.style.visibility = 'visible';
+            explanationToggleElement.onclick = function () {
+                explain.style.display = explain.style.display === 'none' ? 'block' : 'none';
+                explain.innerText = explanations[question.number];
+            }
+        }
         answers = question.answers.shaffle();
         if (question.usePictureAnswers !== undefined) {
             answers = question.pictureAnswers.shaffle();
@@ -144,7 +170,7 @@
                     element.parentElement.style.backgroundColor = 'red';
                 }
                 setTimeout(function () {
-                    counterElement.innerText = answered + '/' + asked;
+                    counterElement.innerText = answered + '/' + asked + '/' + questions.length;
                     renderQuestion(questions.random());
                 }, 2000);
             }

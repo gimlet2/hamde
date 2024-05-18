@@ -204,7 +204,7 @@ a.pure-button-primary {
     font-weight: 400;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    margin: 4em 0em 1em;
+    margin: 1em 0em 1em;
 }
 
 /* This is a modifier class used when the content-head is inside a ribbon */
@@ -279,6 +279,20 @@ a.pure-button-primary {
         border: none;
     }
 
+}
+
+#explain {
+    display: none;
+}
+
+#explain_toggle {
+    margin-top: 4em;
+    border: solid 1px;
+    border-radius: 50%;
+    width: 2em;
+    height: 2em;
+    text-align: center;
+    vertical-align: middle;
 }
 
 #question {
